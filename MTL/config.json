@@ -1,0 +1,28 @@
+{
+  "templates": {
+    "default_template": "MTL1_MasterTemplate_Placeholders.docx",
+    "fallback_template": null
+  },
+  "output": {
+    "default_output_name": "{{mtl_number}}_Generated.docx",
+    "include_timestamp": false
+  },
+  "placeholders": {
+    "mtl_title": "{MTL_TITLE}",
+    "version_number": "{VERSION}",
+    "revision_number": "{REV}",
+    "created_date": "{TODAYS_DATE}",
+    "created_by": "{CREATED_BY}",
+    "prerequisites": "{PRE_REQ}",
+    "required_equipment": "{REQ_EQUIP}",
+    "completion_criteria": "{COMP_CRIT}",
+    "current_date": "{CURRENT_DATE}",
+    "step_count": "{STEP_COUNT}"
+  },
+  "formatting": {
+    "title_style": "Heading 1",
+    "table_style": "Table Grid",
+    "bullet_point": "•",
+    "checkbox": "☐"
+  }
+}

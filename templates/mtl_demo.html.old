@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All-in-One MTL Demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/jsoneditor@latest/dist/jsoneditor.min.css" rel="stylesheet" type="text/css">
+    <script src="https://cdn.jsdelivr.net/npm/jsoneditor@latest/dist/jsoneditor.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f5f5f5; margin: 0; padding: 0; }
+        .container { max-width: 900px; margin: 40px auto; background: #fff; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 30px; }
+        h1 { color: #007acc; }
+        .upload-area { border: 2px dashed #007acc; padding: 40px; text-align: center; border-radius: 8px; background: #f9f9f9; margin-bottom: 30px; }
+        .json-editor-area { margin-bottom: 30px; }
+        button { background: #007acc; color: white; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; margin: 10px 0; }
+        button:hover { background: #005a9e; }
+        .explanation { background: #e8f5e8; padding: 15px; border-radius: 6px; margin-bottom: 20px; border-left: 4px solid #4caf50; }
+        .error { background: #ffe8e8; padding: 15px; border-radius: 6px; margin-bottom: 20px; border-left: 4px solid #f44336; }
+        .progress-bar {
+            width: 100%;
+            background: #eee;
+            border-radius: 6px;
+            margin: 10px 0;
+            height: 18px;
+            overflow: hidden;
+            display: none;
+        }
+        .progress-bar-inner {
+            height: 100%;
+            background: #007acc;
+            width: 0%;
+            transition: width 0.2s;
+        }
+        .spinner {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border: 3px solid #007acc;
+            border-top: 3px solid #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            vertical-align: middle;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>All-in-One MTL Demo</h1>
+        <div class="explanation">
+            <strong>How it works:</strong> <br>
+            1. Drag and drop your document (PDF/DOCX/TXT) below.<br>
+            2. The AI bot will process it and generate a JSON template for your MTL.<br>
+            3. Edit the JSON as needed.<br>
+            4. Click "Generate MTL DOCX" to create your Word document.<br>
+        </div>
+        <div class="upload-area" id="upload-area">
+            <input type="file" id="fileInput" accept=".pdf,.docx,.txt,.md" style="display:none;">
+            <p>Drag & drop your document here, or <button onclick="document.getElementById('fileInput').click()">Browse</button></p>
+            <div id="upload-status"></div>
+            <div class="progress-bar" id="upload-progress-bar"><div class="progress-bar-inner" id="upload-progress-inner"></div></div>
+            <button id="cancel-upload-btn" style="display:none;margin-top:10px;background:#f44336;">Cancel</button>
+        </div>
+        <div class="json-editor-area">
+            <h3>Edit MTL JSON</h3>
+            <div id="jsoneditor" style="width:100%; height:400px;"></div>
+            <button id="saveJsonBtn">Save JSON</button>
+        </div>
+        <button id="generateBtn">Generate MTL DOCX</button>
+        <div id="result"></div>
+
+        <hr>
+        <h3>Uploaded Documents & Generated MTL JSONs</h3>
+        <div id="docList"></div>
+    </div>
+    <script>
+        // Global status/progress elements
+        let uploadStatus, progressBar, progressInner, cancelBtn, currentXhr;
+
+        // List all uploaded documents and add edit/delete/download buttons
+        function loadDocList() {
+            fetch('/documents')
+            .then(response => response.json())
+            .then(data => {
+                const container = document.getElementById('docList');
+                const docs = data.documents || [];
+                if (!docs.length) {
+                    container.innerHTML = '<em>No documents uploaded yet.</em>';
+                    return;
+                }
+                let html = '<table style="width:100%;border-collapse:collapse;">';
+                html += '<tr><th>Document</th><th>Actions</th></tr>';
+                docs.forEach(doc => {
+                    html += `<tr>
+                        <td>${doc.filename}</td>
+                        <td>
+                            <button title="Edit" onclick="editDoc('${doc.id}', '${doc.filename}')">✏️</button>
+                            <button title="Delete" onclick="deleteDoc('${doc.id}')">🗑️</button>
+                            <button title="Download JSON" onclick="downloadJson('${doc.id}', '${doc.filename}')">⬇️</button>
+                        </td>
+                    </tr>`;
+                });
+                html += '</table>';
+                container.innerHTML = html;
+            });
+        }
+        function downloadJson(docId, filename) {
+            fetch(`/data/processed/${docId}.json`)
+                .then(response => response.blob())
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = (filename ? filename.replace(/\.[^/.]+$/, "") : docId) + '_MTL.json';
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                });
+        }
+        function deleteDoc(docId) {
+            if (!confirm('Delete this document?')) return;
+            fetch(`/documents/${docId}`, { method: 'DELETE' })
+            .then(response => response.json())
+            .then(data => {
+                loadDocList();
+                document.getElementById('result').innerHTML = 'Document deleted.';
+            });
+        }
+        function editDoc(docId, filename) {
+            fetch(`/data/processed/${docId}.json`)
+            .then(response => {
+                if (!response.ok) throw new Error('JSON not found for this document.');
+                return response.json();
+            })
+            .then(json => {
+                editor.set(json);
+                document.getElementById('result').innerHTML = 'Loaded for editing: ' + (filename || docId);
+                // Save changes back to server
+                document.getElementById('saveJsonBtn').onclick = function() {
+                    const updatedJson = editor.get();
+                    fetch(`/documents/${docId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ json: updatedJson })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('result').innerHTML = 'JSON updated!';
+                        loadDocList();
+                    });
+                };
+            })
+            .catch(err => {
+                document.getElementById('result').innerHTML = `<span class="error">${err.message}</span>`;
+            });
+        }
+        // Refresh list on page load and after upload
+        window.onload = function() {
+            const container = document.getElementById("jsoneditor");
+            editor = new JSONEditor(container, { mode: "tree" });
+            editor.set({});
+            loadDocList();
+            // Status/progress elements
+            uploadStatus = document.getElementById('upload-status');
+            progressBar = document.getElementById('upload-progress-bar');
+            progressInner = document.getElementById('upload-progress-inner');
+            // Cancel button
+            cancelBtn = document.getElementById('cancel-upload-btn');
+            cancelBtn.onclick = function() {
+                if (currentXhr) {
+                    currentXhr.abort();
+                    uploadStatus.innerHTML = '<span class="error">Upload cancelled.</span>';
+                    progressBar.style.display = 'none';
+                    cancelBtn.style.display = 'none';
+                }
+            };
+            // Drag and drop upload logic
+            const uploadArea = document.getElementById('upload-area');
+            const fileInput = document.getElementById('fileInput');
+            uploadArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                uploadArea.style.background = '#e0f7fa';
+            });
+            uploadArea.addEventListener('dragleave', function(e) {
+                e.preventDefault();
+                uploadArea.style.background = '#f9f9f9';
+            });
+            uploadArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                uploadArea.style.background = '#f9f9f9';
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    handleFileUpload(files[0]);
+                }
+            });
+            fileInput.addEventListener('change', function(e) {
+                if (fileInput.files.length > 0) {
+                    handleFileUpload(fileInput.files[0]);
+                }
+            });
+        };
+    // ...existing code...
+        function handleFileUpload(file) {
+            if (!uploadStatus || !progressBar || !progressInner || !cancelBtn) {
+                alert('Upload status/progress bar not initialized. Please reload the page.');
+                return;
+            }
+            uploadStatus.innerHTML = 'Uploading... <span class="spinner"></span>';
+            progressBar.style.display = 'block';
+            progressInner.style.width = '0%';
+            cancelBtn.style.display = 'inline-block';
+            const formData = new FormData();
+            formData.append('file', file);
+            // Use XHR for upload progress
+            const xhr = new XMLHttpRequest();
+            currentXhr = xhr;
+            xhr.open('POST', '/api/process-document', true);
+            let processingTimeout = null;
+            xhr.upload.onprogress = function(e) {
+                if (e.lengthComputable) {
+                    const percent = Math.round((e.loaded / e.total) * 100);
+                    progressInner.style.width = percent + '%';
+                    uploadStatus.innerHTML = `Uploading... ${percent}% <span class="spinner"></span>`;
+                }
+            };
+            xhr.onloadstart = function() {
+                progressBar.style.display = 'block';
+                progressInner.style.width = '0%';
+                progressInner.style.background = '#007acc'; // blue for upload
+                uploadStatus.innerHTML = 'Uploading... <span class="spinner"></span>';
+            };
+            xhr.onloadend = function() {
+                progressInner.style.width = '100%';
+            };
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    // Switch to processing stage after upload
+                    progressInner.style.width = '100%';
+                    progressInner.style.background = '#4caf50'; // green for processing
+                    uploadStatus.innerHTML = 'Processing document... <span class="spinner"></span>';
+                    // Keep progress bar visible during processing
+                    progressBar.style.display = 'block';
+                    cancelBtn.style.display = 'none';
+                    // Disable upload and generate buttons during processing
+                    document.getElementById('fileInput').disabled = true;
+                    document.getElementById('generateBtn').disabled = true;
+                    document.getElementById('saveJsonBtn').disabled = true;
+                    // Set a timeout in case processing takes too long
+                    processingTimeout = setTimeout(function() {
+                        uploadStatus.innerHTML = '<div class="error">Processing is taking longer than expected. Please wait or try again later.</div>';
+                    }, 60000); // 60 seconds
+                    if (xhr.status === 200) {
+                        try {
+                            const data = JSON.parse(xhr.responseText);
+                            if (processingTimeout) clearTimeout(processingTimeout);
+                            if (data.success) {
+                                uploadStatus.innerHTML = 'Document processed!';
+                                currentJson = data.json_template || {};
+                                editor.set(currentJson);
+                                loadDocList();
+                            } else {
+                                let errorMsg = data.error || (data.json_template && data.json_template.error) || 'Unknown error.';
+                                let debugInfo = data.raw ? `<pre>${JSON.stringify(data.raw, null, 2)}</pre>` : '';
+                                uploadStatus.innerHTML = `<div class='error'>Error: ${errorMsg}${debugInfo}</div>`;
+                            }
+                        } catch (err) {
+                            if (processingTimeout) clearTimeout(processingTimeout);
+                            uploadStatus.innerHTML = `<div class='error'>Error parsing server response.<br><pre>${xhr.responseText}</pre></div>`;
+                        }
+                    } else {
+                        uploadStatus.innerHTML = `<div class='error'>Upload failed (HTTP ${xhr.status}).<br><pre>${xhr.responseText}</pre></div>`;
+                    }
+                    // Re-enable buttons after processing
+                    document.getElementById('fileInput').disabled = false;
+                    document.getElementById('generateBtn').disabled = false;
+                    document.getElementById('saveJsonBtn').disabled = false;
+                }
+            };
+            xhr.onerror = function(e) {
+                uploadStatus.innerHTML = `<div class='error'>Network error during upload.<br><pre>${e.toString()}</pre></div>`;
+                progressBar.style.display = 'none';
+                cancelBtn.style.display = 'none';
+            };
+            xhr.send(formData);
+        }
+        document.getElementById('saveJsonBtn').onclick = function() {
+            currentJson = editor.get();
+            fetch('/api/save-json', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ json: currentJson })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerHTML = 'JSON saved!';
+            })
+            .catch(err => {
+                document.getElementById('result').innerHTML = '<span class="error">Error saving JSON.</span>';
+            });
+        };
+        document.getElementById('generateBtn').onclick = function() {
+            currentJson = editor.get();
+            fetch('/api/generate-mtl', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ json: currentJson })
+            })
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'MTL_Generated.docx';
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                document.getElementById('result').innerHTML = 'MTL DOCX generated and downloaded!';
+            })
+            .catch(err => {
+                document.getElementById('result').innerHTML = '<span class="error">Error generating MTL DOCX.</span>';
+            });
+        };
+    </script>
+</body>
+</html>

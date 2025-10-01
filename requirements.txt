@@ -1,0 +1,38 @@
+# Core dependencies
+requests>=2.31.0
+python-dotenv>=1.0.0
+click>=8.1.0
+
+# Document processing
+PyPDF2>=3.0.1
+python-docx>=0.8.11
+python-pptx>=0.6.21
+openpyxl>=3.1.2
+markdown>=3.4.4
+markdown-it-py>=3.0.0
+jinja2>=3.1.2
+PyYAML>=6.0.1
+jsonschema>=4.21.1
+weasyprint>=62.3
+pytest>=7.4.0
+
+# Text processing and embeddings
+langchain>=0.1.0
+langchain-community>=0.0.20
+sentence-transformers>=2.2.2
+chromadb>=0.4.0
+
+# Web scraping (for URLs)
+beautifulsoup4>=4.12.2
+requests-html>=0.10.0
+
+# API and web framework
+fastapi>=0.104.0
+uvicorn>=0.24.0
+pydantic>=2.5.0
+python-multipart>=0.0.6
+
+# Utilities
+tqdm>=4.66.0
+rich>=13.7.0
+pathlib2>=2.3.7

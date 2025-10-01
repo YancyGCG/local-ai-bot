@@ -1,0 +1,174 @@
+$schema: "http://json-schema.org/draft-07/schema#"
+title: MTL Task
+type: object
+required:
+  - meta
+  - tools_required
+  - prerequisites
+  - steps
+  - confirmations
+  - teachback
+properties:
+  meta:
+    type: object
+    required:
+      - task_id
+      - title
+      - version
+      - owner
+      - last_updated
+      - estimated_time_min
+      - difficulty
+      - tags
+    properties:
+      task_id:
+        type: string
+      title:
+        type: string
+      version:
+        type: string
+      owner:
+        type: string
+      last_updated:
+        type: string
+        pattern: "^(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])-\\d{2}$"
+      estimated_time_min:
+        type: integer
+        minimum: 1
+      difficulty:
+        type: string
+        enum:
+          - Beginner
+          - Intermediate
+          - Advanced
+      tags:
+        type: array
+        minItems: 1
+        items:
+          type: string
+  tools_required:
+    type: array
+    minItems: 1
+    items:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+        qty:
+          type: string
+        notes:
+          type: string
+  prerequisites:
+    type: array
+    items:
+      type: string
+  environment:
+    type: object
+    properties:
+      models:
+        type: array
+        items:
+          type: string
+      sw_versions:
+        type: array
+        items:
+          type: string
+      connections:
+        type: array
+        items:
+          type: string
+  steps:
+    type: array
+    minItems: 1
+    items:
+      type: object
+      required:
+        - id
+        - text
+      properties:
+        id:
+          type: string
+        text:
+          type: string
+        critical:
+          type: boolean
+          default: false
+        confirm:
+          type: string
+        screenshot:
+          type: string
+        tips:
+          type: array
+          items:
+            type: string
+        warnings:
+          type: array
+          items:
+            type: string
+  confirmations:
+    type: array
+    minItems: 1
+    items:
+      type: object
+      required:
+        - item
+        - accept
+      properties:
+        item:
+          type: string
+        accept:
+          type: array
+          minItems: 1
+          items:
+            type: string
+  teachback:
+    type: object
+    required:
+      - prompts
+      - rubric
+    properties:
+      prompts:
+        type: array
+        minItems: 1
+        items:
+          type: string
+      rubric:
+        type: array
+        minItems: 1
+        items:
+          type: object
+          required:
+            - criterion
+            - levels
+          properties:
+            criterion:
+              type: string
+            levels:
+              type: array
+              minItems: 4
+              items:
+                type: object
+                required:
+                  - label
+                  - description
+                properties:
+                  label:
+                    type: string
+                    enum:
+                      - Needs Work
+                      - Good
+                      - Better
+                      - Best
+                  description:
+                    type: string
+  signoff:
+    type: object
+    properties:
+      trainee_name:
+        type: string
+      trainer_name:
+        type: string
+      date:
+        type: string

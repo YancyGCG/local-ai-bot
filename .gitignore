@@ -1,0 +1,12 @@
+# Generated and runtime artifacts
+.DS_Store
+__pycache__/
+*.py[cod]
+.venv/
+node_modules/
+*.log
+data/uploads/
+data/processed/
+logs/
+MTL/uploads/
+generated_mtls/

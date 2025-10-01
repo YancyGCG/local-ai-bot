@@ -1,0 +1,29 @@
+version: '3'
+services:
+  mtl-document-builder:
+    build:
+      context: ..
+      dockerfile: web_mtl_builder/Dockerfile
+    ports:
+      - "0.0.0.0:8080:5555"
+    volumes:
+      - ../templates:/app/templates
+      - ../uploads:/app/uploads
+      - ../generated_mtls:/app/generated_mtls
+    environment:
+      - FLASK_ENV=development
+      - FLASK_DEBUG=1
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5555"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      - web_network
+
+networks:
+  web_network:
+    driver: bridge

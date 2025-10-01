@@ -1,0 +1,151 @@
+meta:
+  task_id: "MTL 2"
+  title: "GEN5 Firmware Flash"
+  version: "GT-047"
+  owner: "Yancy Shepherd"
+  last_updated: "10-01-25"
+  estimated_time_min: 45
+  difficulty: "Intermediate"
+  tags:
+    - "GEN5"
+    - "Firmware"
+    - "Field Service"
+  purpose: "Install the latest validated firmware on GEN5 printers to resolve ticket misfeeds."
+tools_required:
+  - name: "Service Laptop"
+    qty: "1"
+    notes: "Windows 11 with GEN5 Toolkit installed"
+  - name: "USB A-B Cable"
+    qty: "1"
+  - name: "GEN5 Firmware Package X.Y.Z"
+    notes: "Stored on encrypted USB drive"
+  - name: "External Power Supply"
+    qty: "1"
+    notes: "24V DC"
+prerequisites:
+  - "Confirm workstation has administrator rights"
+  - "Back up current GEN5 configuration file"
+  - "Verify firmware checksum with SHA256 utility"
+environment:
+  models:
+    - "GEN5 Printer"
+    - "JCM Loader"
+  sw_versions:
+    - "GEN5 Toolkit 3.4.2"
+    - "USB Driver 2.1.0"
+  connections:
+    - "Direct USB connection"
+    - "Service network (for update validation)"
+steps:
+  - id: "Prep-Workspace"
+    text: "Power down the printer, remove tickets, and place the unit on a static-safe mat."
+    critical: true
+    confirm: "Printer is powered down and disconnected from ticket feed."
+    warnings:
+      - "Disconnect mains power before handling the printer."
+  - id: "Verify-Files"
+    text: "Launch GEN5 Toolkit and verify the firmware package matches the checksum manifest."
+    tips:
+      - "Use the built-in checksum verifier to avoid manual entry errors."
+    confirm: "Checksum validation passes with a green status."
+  - id: "Connect-USB"
+    text: "Connect the USB A-B cable between the service laptop and the printer's maintenance port."
+    critical: true
+    warnings:
+      - "Use a shielded cable shorter than 2 meters to prevent communication drops."
+    confirm: "Toolkit shows 'GEN5 detected' with serial number populated."
+  - id: "Enter-Bootloader"
+    text: "In Toolkit, click 'Enter Bootloader Mode' and wait for the status indicator to turn amber."
+    confirm: "Device LED pulses amber and Toolkit displays 'Bootloader ready'."
+  - id: "Select-Firmware"
+    text: "Choose the firmware package X.Y.Z from the dropdown and review release notes for breaking changes."
+    tips:
+      - "Hover over the info icon to see mitigations for known issues."
+  - id: "Start-Flash"
+    text: "Click 'Flash Firmware' and monitor the progress bar until it reaches 100%."
+    critical: true
+    warnings:
+      - "Do not disconnect power or USB during flashing."
+      - "If progress stalls for more than 2 minutes, abort and collect logs."
+    confirm: "Toolkit displays 'Flash completed successfully'."
+  - id: "Auto-Reboot"
+    text: "Allow the printer to reboot automatically; Toolkit will reconnect in operational mode."
+    confirm: "Status panel shows 'Operational' within 90 seconds."
+  - id: "Validate-Version"
+    text: "Navigate to Device Info and confirm firmware version X.Y.Z is listed under Installed Version."
+    tips:
+      - "Capture a screenshot for the maintenance ticket."
+    confirm: "Installed Version matches X.Y.Z exactly."
+  - id: "Test-Feed"
+    text: "Load 10 test tickets and run the feeder test to ensure proper advancement."
+    warnings:
+      - "Keep the hopper cover open to observe ticket alignment."
+    confirm: "All 10 tickets feed without skew or jams."
+  - id: "Restore-Service"
+    text: "Document the update in the service log, reconnect to production power, and close the service ticket."
+    confirm: "Production power restored and LMS ticket updated with firmware version."
+confirmations:
+  - item: "Firmware version"
+    accept:
+      - "Toolkit reports X.Y.Z"
+      - "Device Info screenshot saved"
+  - item: "Functional test"
+    accept:
+      - "10/10 tickets feed successfully"
+  - item: "Status LEDs"
+    accept:
+      - "Power: solid green"
+      - "Status: solid blue"
+teachback:
+  prompts:
+    - "Explain why checksum validation precedes flashing."
+    - "Demonstrate entering bootloader mode without prompting."
+    - "Describe recovery steps if the flash process fails at 70%."
+    - "Show how to confirm firmware version in Toolkit."
+    - "Outline post-flash documentation requirements."
+    - "Identify LED states that indicate an incomplete flash."
+  rubric:
+    - criterion: "Connections"
+      levels:
+        - label: "Needs Work"
+          description: "Fails to secure USB/power connections or skips verification."
+        - label: "Good"
+          description: "Connects devices but needs prompts to verify status."
+        - label: "Better"
+          description: "Verifies connectivity and status indicators with minimal guidance."
+        - label: "Best"
+          description: "Confidently sets up and validates all connections while explaining rationale."
+    - criterion: "Versioning"
+      levels:
+        - label: "Needs Work"
+          description: "Cannot locate firmware version or ignores checksum warnings."
+        - label: "Good"
+          description: "Identifies version but overlooks checksum or release notes."
+        - label: "Better"
+          description: "Confirms version and reviews release notes when prompted."
+        - label: "Best"
+          description: "Validates checksum, version, and release notes proactively."
+    - criterion: "Recovery"
+      levels:
+        - label: "Needs Work"
+          description: "Unclear on abort/log collection process."
+        - label: "Good"
+          description: "Can describe recovery steps with coaching."
+        - label: "Better"
+          description: "Executes recovery with minor reminders."
+        - label: "Best"
+          description: "Leads recovery workflow and briefs stakeholders on impact."
+    - criterion: "Validation"
+      levels:
+        - label: "Needs Work"
+          description: "Skips feeder test or neglects documentation."
+        - label: "Good"
+          description: "Performs test but forgets to log outcomes."
+        - label: "Better"
+          description: "Runs test and logs results with light coaching."
+        - label: "Best"
+          description: "Completes tests, logs evidence, and highlights follow-up actions."
+signoff:
+  trainee_name: "________________"
+  trainer_name: "________________"
+  date: "____-____-____"

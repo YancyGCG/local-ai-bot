@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MTL Document Builder</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background-color: #00699b;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h1 {
+            margin: 0;
+        }
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        .dropzone {
+            border: 2px dashed #00699b;
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+            color: #00699b;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .dropzone.highlight { 
+            background: #e3f2fd; 
+        }
+        .dropzone p {
+            margin: 0;
+            font-size: 16px;
+        }
+        .selected-files {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #555;
+            font-weight: bold;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        .radio-group input {
+            margin-right: 8px;
+        }
+        button {
+            background: #00699b;
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background 0.3s ease;
+            width: 100%;
+        }
+        button:hover { 
+            background: #005377; 
+        }
+        .error { 
+            color: #d32f2f; 
+            background: #ffebee; 
+            padding: 15px; 
+            border-radius: 4px; 
+            margin-bottom: 20px; 
+            border-left: 4px solid #d32f2f;
+        }
+        select, input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+        .view-files {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #00699b;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .view-files:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>MTL Document Builder</h1>
+    </header>
+    
+    <div class="container">
+        {% if error %}
+        <div class="error">{{ error }}</div>
+        {% endif %}
+        
+        <div class="card">
+            <form id="uploadForm" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="dropzone">Upload JSON Data File</label>
+                    <div class="dropzone" id="dropzone">
+                        <p>Drag and drop your JSON file here, or click to select a file.</p>
+                        <input type="file" id="json_files" name="json_files" accept=".json" style="display:none;">
+                        <div class="selected-files" id="selectedFiles"></div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Select MTL Type</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="mtl_type" value="MTL1"> MTL1</label>
+                        <label><input type="radio" name="mtl_type" value="MTL2" checked> MTL2</label>
+                        <label><input type="radio" name="mtl_type" value="MTL3"> MTL3</label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="revision">Revision Number</label>
+                    <input type="number" id="revision" name="revision" value="1" min="1">
+                </div>
+                
+                <div class="form-group">
+                    <label for="filetype">Output Format</label>
+                    <select id="filetype" name="filetype">
+                        <option value="docx" selected>DOCX Document</option>
+                        <option value="pdf">PDF Document</option>
+                    </select>
+                </div>
+                
+                <button type="submit">Generate Document</button>
+            </form>
+        </div>
+        
+        <a href="{{ url_for('generated_files') }}" class="view-files">View All Generated Files</a>
+    </div>
+    
+    <footer>
+        <p>MTL Document Builder | Version 1.0</p>
+    </footer>
+    
+    <script>
+        const dropzone = document.getElementById('dropzone');
+        const fileInput = document.getElementById('json_files');
+        const selectedFiles = document.getElementById('selectedFiles');
+        
+        dropzone.addEventListener('click', () => fileInput.click());
+        
+        dropzone.addEventListener('dragover', e => {
+            e.preventDefault();
+            dropzone.classList.add('highlight');
+        });
+        
+        dropzone.addEventListener('dragleave', e => {
+            e.preventDefault();
+            dropzone.classList.remove('highlight');
+        });
+        
+        dropzone.addEventListener('drop', e => {
+            e.preventDefault();
+            dropzone.classList.remove('highlight');
+            fileInput.files = e.dataTransfer.files;
+            updateFileList();
+        });
+        
+        fileInput.addEventListener('change', updateFileList);
+        
+        function updateFileList() {
+            selectedFiles.innerHTML = '';
+            if (fileInput.files.length > 0) {
+                selectedFiles.textContent = 'Selected file: ' + fileInput.files[0].name;
+            }
+        }
+    </script>
+</body>
+</html>

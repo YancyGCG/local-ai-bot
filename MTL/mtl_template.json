@@ -1,0 +1,104 @@
+{
+  "_TEMPLATE_INSTRUCTIONS": {
+    "description": "MTL (Master Task List) JSON Template for ChatGPT",
+    "purpose": "Use this template to create standardized MTL documents for technical procedures",
+    "workflow": "1. Fill in all required fields, 2. Generate Word docs, 3. Convert to PDFs, 4. Use for training",
+    "notes": [
+      "Keep steps concise but complete - this is for trained employees",
+      "Each step should be actionable and verifiable", 
+      "Avoid photos/attachments in MTL1 - those go in MTL2",
+      "Use present tense, active voice",
+      "Include safety considerations where needed"
+    ]
+  },
+  "MTL_NUMBER": "MTL #",
+  "_MTL_NUMBER_HELP": "Format: MTL # where # is 1, 2, or 3 only (MTL 1=quick reference, MTL 2=detailed training, MTL 3=teachback assessment)",
+  
+  "MTL_TITLE": "Brief Descriptive Title of Procedure",
+  "_MTL_TITLE_HELP": "Clear, concise title that describes what task is being performed (e.g., 'JCM GEN5 Printer Flashing', 'MEI Bill Validator Firmware')",
+  
+  "VERSION_NUMBER": "GT-###",
+  "_VERSION_NUMBER_HELP": "Format: GT-### where ### is sequential number for procedure versions (e.g., GT-001, GT-002, GT-150)",
+  
+  "REVISION_NUMBER": "001", 
+  "_REVISION_NUMBER_HELP": "3-digit revision number, increment when procedure is updated (001, 002, 003, etc.)",
+  
+  "CREATED_DATE": "MM/YYYY",
+  "_CREATED_DATE_HELP": "Month/Year when procedure was last reviewed and approved (e.g., '06/2024', '12/2023')",
+  
+  "CREATED_BY": "Full Name",
+  "_CREATED_BY_HELP": "Name of person who created/authored this procedure",
+  
+  "CATEGORY": "Equipment Type or Department",
+  "_CATEGORY_HELP": "Optional: Helps organize MTLs (e.g., 'Printers', 'Network', 'Security', 'Maintenance')",
+  
+  "ESTIMATED_TIME": "## minutes",
+  "_ESTIMATED_TIME_HELP": "Optional: Approximate time for trained employee to complete (e.g., '15 minutes', '45 minutes', '2 hours')",
+  
+  "PREREQUISITES": [
+    "Required knowledge, certifications, or prior procedures",
+    "Equipment or tools that must be available",
+    "System states or conditions that must exist"
+  ],
+  "_PREREQUISITES_HELP": "List what must be done/available before starting this procedure",
+  
+  "SAFETY_NOTES": [
+    "Important safety considerations",
+    "PPE requirements",
+    "Hazard warnings"
+  ],
+  "_SAFETY_NOTES_HELP": "Critical safety information - can be empty array [] if no special safety concerns",
+  
+  "STEPS": [
+    "Step 1: Start with action verb, be specific about what to do",
+    "Step 2: Include verification steps where important (e.g., 'verify LED shows green')",
+    "Step 3: Include timing for steps that require waiting",
+    "Step 4: Specify exact button names, menu paths, or commands",
+    "Step 5: Include error handling for common issues",
+    "Step 6: End with verification that procedure completed successfully"
+  ],
+  "_STEPS_HELP": "Each step should be a single, clear action. Keep technical but concise. This is a checklist format.",
+  
+  "COMPLETION_CRITERIA": [
+    "How to verify the procedure was successful",
+    "What the end state should look like",
+    "Key indicators that everything is working properly"
+  ],
+  "_COMPLETION_CRITERIA_HELP": "Clear success criteria so technician knows they're done and it worked",
+  
+  "TROUBLESHOOTING": {
+    "Common Issue 1": "Solution or next steps",
+    "Common Issue 2": "Solution or next steps",
+    "General Problems": "When to escalate or reference other documentation"
+  },
+  "_TROUBLESHOOTING_HELP": "Optional section for common problems and quick fixes",
+  
+  "RELATED_PROCEDURES": [
+    "GT-### - Related procedure name",
+    "GT-### - Follow-up procedure name"
+  ],
+  "_RELATED_PROCEDURES_HELP": "Optional: List other MTLs that are related or follow this one",
+  
+  "EQUIPMENT_LIST": [
+    "Specific equipment model numbers",
+    "Required tools",
+    "Software versions if applicable"
+  ],
+  "_EQUIPMENT_LIST_HELP": "Optional: Specific equipment this procedure applies to",
+  
+  "_EXAMPLE_USAGE": {
+    "chatgpt_prompt": "Please create an MTL JSON for slot machine technicians using this template for [DESCRIBE SPECIFIC PROCEDURE]. This is for EG TECHS working with gaming equipment. Make sure to: 1) Use proper MTL numbering (MTL # and GT-###), 2) Create 8-15 detailed steps for trained technicians, 3) Include vendor-specific details and model numbers, 4) Add safety considerations for electrical work, 5) Include prerequisite certifications/knowledge, 6) Remove all _HELP fields from final JSON",
+    "sample_procedures": [
+      "JCM GEN5 printer firmware flashing and calibration",
+      "MEI bill validator cleaning and error resolution", 
+      "IGT S2000 RAM clear after component replacement",
+      "Konami diagnostic menu navigation and testing",
+      "SAS cable installation and player tracking setup",
+      "Progressive system diagnostics (WAP/Linked/Standalone)",
+      "Cabinet hardware replacement with seal break procedures",
+      "Button and CSV testing procedures",
+      "Game conversion and installation verification",
+      "Controller and signage system troubleshooting"
+    ]
+  }
+}

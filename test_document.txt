@@ -1,0 +1,37 @@
+IGT G23 Slot Machine Bill Validator Service Manual
+
+Section 1: Safety Procedures
+- Power down machine completely before servicing
+- Follow lockout/tagout procedures per casino protocol
+- Use proper anti-static wrist strap when handling electronic components
+
+Section 2: Bill Validator Removal
+1. Remove top glass and upper cabinet door
+2. Disconnect ribbon cable from validator
+3. Remove mounting screws (4x Phillips head)
+4. Carefully extract validator unit
+
+Section 3: Diagnostic Testing
+- Use IGT diagnostic software v4.2 or higher
+- Test bill acceptance rates with various denominations
+- Check for error codes 52, 53, 54 (common validator issues)
+- Verify proper communication with game controller
+
+Section 4: Cleaning Procedures
+- Use approved cleaning cards only (part #VAL-CC-100)
+- Run cleaning cycle 3 times minimum
+- Inspect optical sensors for dust accumulation
+- Clean bill path with lint-free cloth
+
+Section 5: Installation and Testing
+- Reverse removal procedure
+- Ensure all connections are secure
+- Run full diagnostic cycle
+- Test with live bills before returning to service
+
+Common Issues:
+- Bills rejected: Check cleaning, sensor alignment
+- Communication error: Verify ribbon cable connection
+- Jam detection: Inspect bill path for obstructions
+
+This procedure applies to IGT G23, G27, and G32 cabinet models with MEI validators.

@@ -1,0 +1,62 @@
+{
+  "MTL_NUMBER": "MTL 2",
+  "MTL_TITLE": "Router Configuration for Branch Office",
+  "VERSION_NUMBER": "GT-004",
+  "REVISION_NUMBER": "001",
+  "CREATED_DATE": "06/2024",
+  "CREATED_BY": "Network Operations Team",
+  "CATEGORY": "Network Infrastructure",
+  "ESTIMATED_TIME": "45 minutes",
+  "PREREQUISITES": [
+    "Network technician certification or equivalent experience",
+    "Access to network management system",
+    "Router default credentials available",
+    "Network diagram for target location"
+  ],
+  "SAFETY_NOTES": [
+    "Ensure proper grounding when handling equipment",
+    "Coordinate with site personnel before power cycling equipment",
+    "Have rollback plan ready in case of configuration errors"
+  ],
+  "STEPS": [
+    "Verify router model number and confirm it matches installation requirements",
+    "Connect console cable to router and establish terminal session at 9600 baud",
+    "Power on router and wait for boot sequence to complete (approximately 3-5 minutes)",
+    "Access router using default credentials and immediately change admin password",
+    "Configure hostname using format [SITE]-RTR-[NUMBER] (e.g., NYC-RTR-01)",
+    "Set management IP address on appropriate VLAN interface",
+    "Configure WAN interface with ISP-provided settings (IP, subnet, gateway)",
+    "Create required VLANs according to network diagram",
+    "Configure DHCP pools for each VLAN with appropriate scope and options",
+    "Set up static routes for inter-site connectivity",
+    "Configure firewall rules according to security policy",
+    "Enable SNMP monitoring with corporate community string",
+    "Save configuration to startup-config and verify backup completed",
+    "Test connectivity to corporate network and internet",
+    "Verify DHCP is working by connecting test device to each VLAN",
+    "Update network documentation with new device information"
+  ],
+  "COMPLETION_CRITERIA": [
+    "Router responds to ping from network management system",
+    "All VLANs are passing traffic correctly",
+    "Internet connectivity confirmed from each VLAN",
+    "SNMP monitoring shows device as up and responding",
+    "Configuration saved and backed up to network management system"
+  ],
+  "TROUBLESHOOTING": {
+    "Router not responding after power on": "Check power connections, verify console cable, wait full 5 minutes for boot",
+    "Cannot access management interface": "Verify IP configuration, check VLAN assignment, confirm firewall rules",
+    "DHCP not working": "Check DHCP pool configuration, verify VLAN interface is up, confirm no IP conflicts"
+  },
+  "RELATED_PROCEDURES": [
+    "GT-005 - Switch Configuration for Branch Office",
+    "GT-006 - Wireless Access Point Setup",
+    "GT-012 - Network Security Baseline Configuration"
+  ],
+  "EQUIPMENT_LIST": [
+    "Cisco ISR 4321 Router (or equivalent)",
+    "Console cable (RJ45 to USB)",
+    "Network patch cables",
+    "Laptop with terminal emulator software"
+  ]
+}

@@ -1,0 +1,31 @@
+version: '3.8'
+services:
+  ollama:
+    image: ollama/ollama
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    restart: unless-stopped
+    networks:
+      - ollama-net
+
+  mtl-demo:
+    build: .
+    container_name: mtl-demo
+    ports:
+      - "8899:8899"
+    volumes:
+      - ./src:/app/src
+      - ./templates:/app/templates
+      - ./MTL:/app/MTL
+    environment:
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      - ollama
+    restart: unless-stopped
+    networks:
+      - ollama-net
+
+networks:
+  ollama-net:
+    external: true

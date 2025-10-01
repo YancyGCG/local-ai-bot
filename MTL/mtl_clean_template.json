@@ -1,0 +1,39 @@
+{
+  "MTL_NUMBER": "MTL 1",
+  "MTL_TITLE": "Brief Descriptive Title of Procedure",
+  "VERSION_NUMBER": "GT-###",
+  "REVISION_NUMBER": "001",
+  "CREATED_DATE": "MM/YYYY",
+  "CREATED_BY": "Full Name",
+  "CATEGORY": "Equipment Type or Department",
+  "ESTIMATED_TIME": "## minutes",
+  "PREREQUISITES": [
+    "Required knowledge, certifications, or prior procedures",
+    "Equipment or tools that must be available"
+  ],
+  "SAFETY_NOTES": [
+    "Important safety considerations",
+    "PPE requirements if needed"
+  ],
+  "STEPS": [
+    "Step 1: Start with action verb, be specific",
+    "Step 2: Include verification where important",
+    "Step 3: Be clear about timing and waiting",
+    "Step 4: Specify exact names/paths/commands",
+    "Step 5: Include common error handling",
+    "Step 6: End with completion verification"
+  ],
+  "COMPLETION_CRITERIA": [
+    "How to verify procedure was successful",
+    "What the end state should look like"
+  ],
+  "TROUBLESHOOTING": {
+    "Common Issue": "Solution or next steps"
+  },
+  "RELATED_PROCEDURES": [
+    "GT-### - Related procedure name"
+  ],
+  "EQUIPMENT_LIST": [
+    "Specific equipment/tools needed"
+  ]
+}

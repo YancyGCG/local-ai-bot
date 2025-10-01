@@ -1,0 +1,60 @@
+{
+  "MTL_NUMBER": "MTL 2",
+  "MTL_TITLE": "Stanchion Use Policy",
+  "VERSION_NUMBER": "GT-002",
+  "REVISION_NUMBER": "001",
+  "CREATED_DATE": "07/2025",
+  "CREATED_BY": "EG Tech Development Team",
+  "CATEGORY": "Casino Slot Machine Technicians",
+  "ESTIMATED_TIME": "Variable (dependent on project scope and complexity)",
+  "PREREQUISITES": [
+    "Basic understanding of casino slot machine operations"
+  ],
+  "SAFETY_NOTES": [
+    "Always prioritize safety when setting up stanchions or barriers",
+    "Ensure adequate protection for yourself, colleagues, customers, and patrons",
+    "Use personal protective equipment (PPE) as necessary"
+  ],
+  "REQUIRED_TOOLS": [
+    "Magnetic barriers",
+    "Stanchions (casino-supplied or technician-provided)",
+    "Caution tape"
+  ],
+  "STEPS": [
+    {
+      "Step": "1. Set up stanchions or barriers at the beginning of the project before starting any work.",
+      "Description": "Use casino-supplied stanchions if available, otherwise use magnetic barriers or caution tape to cordon off the work area."
+    },
+    {
+      "Step": "2. Select the appropriate type of stanchion or barrier for the job.",
+      "Description": "Consider the size and complexity of the project when choosing the right equipment."
+    },
+    {
+      "Step": "3. Set up stanchions or barriers in a way that clearly defines the boundaries of your work area.",
+      "Description": "Use 2 stand-up stanchions to define an entry and exit point (gate) into the work area, and ensure everyone is aware of it."
+    },
+    {
+      "Step": "4. Secure the stanchions or barriers so that they do not move or are easily knocked down.",
+      "Description": "Use caution tape around the stanchions if necessary to further warn people to stay away."
+    },
+    {
+      "Step": "5. Monitor the work area regularly to ensure safety and prevent accidents.",
+      "Description": "Regularly check for obstructions, patrons, or other hazards that could compromise the safety of your work area."
+    }
+  ],
+  "COMPLETION_CRITERIA": [
+    "Work area is safely cordoned off and free from hazards",
+    "All necessary equipment is in place and functioning properly"
+  ],
+  "TROUBLESHOOTING": {
+    "Stanchions not secure": "Re-secure the stanchions or barriers to prevent movement or tipping.",
+    "Caution tape not visible": "Replace caution tape with a more visible option, such as reflective tape."
+  },
+  "RELATED_PROCEDURES": [
+    "Casino Slot Machine Maintenance Procedure",
+    "EG Tech Development Team Documentation"
+  ],
+  "EQUIPMENT_MODELS": [
+    "Various stanchion and barrier models (casino-supplied or technician-provided)"
+  ]
+}

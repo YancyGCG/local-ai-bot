@@ -1,0 +1,14 @@
+# Core dependencies
+flask>=2.0.0
+werkzeug>=2.0.0
+python-docx>=0.8.11
+lxml>=4.6.3
+
+# Image handling
+Pillow>=9.0.0
+
+# PDF conversion (we're using LibreOffice instead)
+# docx2pdf>=0.1.8  # Optional - we're using LibreOffice for PDF conversion
+
+# Formatting and display
+reportlab>=3.6.0

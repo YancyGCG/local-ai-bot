@@ -1,0 +1,42 @@
+{
+  "MTL_NUMBER": "MTL 1",
+  "MTL_TITLE": "JCM GEN5 Thermal Printer Head Cleaning",
+  "VERSION_NUMBER": "GT-005",
+  "REVISION_NUMBER": "001",
+  "CREATED_DATE": "06/2024",
+  "CREATED_BY": "Yancy Shepherd",
+  "CATEGORY": "Printer Maintenance",
+  "PREREQUISITES": [
+    "?????"
+  ],
+  "SAFETY_NOTES": [
+    "??????"
+  ],
+  "STEPS": [
+    "??????"
+  ],
+  "COMPLETION_CRITERIA": [
+    "Test print shows clear, consistent print quality across full width",
+    "No printer error codes displayed on machine diagnostic screen",
+    "Paper feeds smoothly without jamming or misalignment",
+    "Printer status indicates 'Ready' or 'Online' in diagnostics"
+  ],
+  "TROUBLESHOOTING": {
+    "Poor Print Quality": "Repeat cleaning process, check for worn print head",
+    "Paper Jam": "Verify correct paper threading path, check for debris in guides",
+    "Printer Not Responding": "Check power connections, verify firmware version compatibility",
+    "Error Codes Persist": "Reference JCM service manual for specific error resolution"
+  },
+  "RELATED_PROCEDURES": [
+    "GT-006 - JCM GEN5 Firmware Update Process",
+    "GT-007 - Thermal Paper Roll Replacement Standards",
+    "GT-015 - Printer Diagnostic Menu Navigation"
+  ],
+  "EQUIPMENT_LIST": [
+    "JCM GEN5 Thermal Printer (all variants)",
+    "Isopropyl alcohol (91% or higher)",
+    "Lint-free cleaning cloths",
+    "Fresh thermal paper rolls (approved specification)",
+    "Anti-static wrist strap (recommended)"
+  ]
+}

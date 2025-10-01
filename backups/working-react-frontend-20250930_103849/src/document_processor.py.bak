@@ -1,0 +1,37 @@
+# Full backup before refactor
+"""
+Document Processor for Local AI Bot
+Handles confidential document processing with privacy-first approach
+"""
+
+import os
+import sys
+import json
+import click
+from pathlib import Path
+from dataclasses import dataclass
+import logging
+from datetime import datetime
+
+# Document processing imports
+import PyPDF2
+from docx import Document as DocxDocument
+import openpyxl
+from bs4 import BeautifulSoup
+import markdown
+
+# AI and embeddings
+import requests
+from sentence_transformers import SentenceTransformer
+
+@dataclass
+class ProcessedDocument:
+	"""Container for processed document data"""
+	filename: str
+	content: str
+	metadata: dict
+	chunks: list
+	embeddings: list = None
+	processed_at: str = None
+# ...existing code from main file continues here...
+

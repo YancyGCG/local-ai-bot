@@ -1,0 +1,57 @@
+{
+  "MTL_NUMBER": "MTL 2",
+  "MTL_TITLE": "JCM GEN5 Printer Firmware Update",
+  "VERSION_NUMBER": "GT-002",
+  "REVISION_NUMBER": "001",
+  "CREATED_DATE": "06/2025",
+  "CREATED_BY": "EG Tech Team",
+  "CATEGORY": "Printers",
+  "PRE_REQS": [
+    "Correct firmware from OneDrive",
+    "Paper loaded in printer"
+  ],
+  "REQ_EQUIP": [
+    "GEN 5 printer ready to flash",
+    "Surface Pro",
+    "Standard USB A - B Cable"
+  ],
+  "STEPS": [
+    "Identify printer model number from equipment label and record current firmware version by printing configuration ticket",
+    "Locate correct firmware file for specific GEN5 model and verify FLDFU Downloader software is available on service laptop",
+    "Power down printer completely and connect firmware update cable to designated update port on printer rear panel",
+    "Install FLDFU Downloader software by running FLDFUSetupV228.exe if not already installed, restart PC after completion",
+    "Load fresh ticket stack into paper tray, close printer lid securely, and power on printer",
+    "Verify printer shows solid green LED status indicating ready state before proceeding",
+    "Launch FLDFU Downloader application and verify communication connection shows active status",
+    "Browse to firmware file location, select appropriate version for printer model, and verify file integrity",
+    "Click 'Start Full Firmware Upgrade' button and monitor progress without interrupting the process",
+    "Wait for 'Firmware Upgrade Completed' confirmation message and check for any error notifications",
+    "Press paper feed button to print new configuration ticket and verify firmware version matches intended update",
+    "Test printer functionality using JCM Printer Basic Driver including print quality and sensor operation",
+    "Update equipment documentation with new firmware version, technician name, and completion date",
+    "Disconnect firmware update cable, restore printer to normal operation, and close work order in tracking system"
+  ],
+  "COMPLETION_CRITERIA": [
+    "Configuration ticket shows correct new firmware version",
+    "All printer functions operate normally including feeding, cutting, and sensors",
+    "Printer LED shows solid green ready status",
+    "Equipment records updated with firmware change documentation"
+  ],
+  "TROUBLESHOOTING": {
+    "Connection Failed": "Check USB cable connections, verify FLDFU driver installation, restart application",
+    "Firmware Update Failed": "Verify firmware file compatibility with printer model, check power stability, retry update process",
+    "Post-Update Issues": "Print configuration ticket to verify all parameters, check sensor calibration, contact JCM support if needed",
+    "General Problems": "Reference JCM GEN5 Operation Manual Section 6, escalate to senior technician for hardware failures"
+  },
+  "RELATED_PROCEDURES": [
+    "GT-003 - JCM GEN5 Printer Preventive Maintenance",
+    "GT-004 - JCM GEN5 Printer Troubleshooting and Diagnostics"
+  ],
+  "EQUIPMENT_LIST": [
+    "JCM GEN5 Series Printer (all models)",
+    "FLDFU Downloader software V2.28 or later",
+    "JCM firmware update cable",
+    "Service laptop with Windows OS and USB port",
+    "Fresh ticket stock for testing"
+  ]
+}

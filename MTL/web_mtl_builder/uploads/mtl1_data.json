@@ -1,0 +1,27 @@
+{
+  "MTL_NUMBER": "MTL 1",
+  "MTL_TITLE": "JCM GEN5 Printer Flashing",
+  "VERSION_NUMBER": "GT-002",
+  "REVISION_NUMBER": "001",
+  "CREATED_DATE": "{TODAYS_DATE}",
+  "CREATED_BY": "Yancy Shepherd",
+  "CATEGORY": "Firmware Update",
+  "STEPS": [
+    "Identify printer model and current firmware version (via config ticket or label).",
+    "Power ON printer and load tickets correctly.",
+    "Connect PC to printer using USB-A to USB-B cable.",
+    "Launch JCM Device Firmware Upgrade Downloader (FLDFU) on PC.",
+    "Select and verify the correct firmware file.",
+    "Click 'Full Upgrade' and ensure 'Erase User Settings' is selected unless otherwise instructed.",
+    "Monitor progress and wait for 'Printer Successfully Updated' message.",
+    "Print a configuration ticket by pressing the FEED button twice.",
+    "Verify new firmware version and test printer operation.",
+    "Update service records and close the work order."
+  ],
+  "COMPLETION_CRITERIA": [
+    "Configuration ticket displays correct firmware version.",
+    "Printer responds normally to host machine/EGM.",
+    "No error messages displayed.",
+    "Service record updated with new firmware version."
+  ]
+  }
